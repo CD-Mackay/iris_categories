@@ -23,8 +23,8 @@ names = ['sepal-length', 'sepal-width', 'petal-length', 'petal-width', 'class']
 dataset = read_csv(url, names=names)
 
 
-print(dataset.shape)
-print(dataset.head(20))
+# print(dataset.shape)
+# print(dataset.head(20))
 
 ## Box and whisker plots -- Cool?
 # dataset.plot(kind='box', subplots=True, layout=(2,2), sharex=False, sharey=False)
@@ -33,5 +33,12 @@ print(dataset.head(20))
 # dataset.hist()
 # pyplot.show()
 
-scatter_matrix(dataset)
-pyplot.show()
+# scatter_matrix(dataset)
+# pyplot.show()
+
+## Validation Dataset ? What does this mean?
+
+array = dataset.values
+x = array[:, 0:4]
+y= array[:, 4]
+X_train, X_validation, Y_train, Y_validation = train_test_split(x, y, test_size=0.20, random_state=1)
