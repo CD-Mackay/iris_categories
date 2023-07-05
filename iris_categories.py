@@ -29,3 +29,6 @@ print(dataset.head(20))
 ## Box and whisker plots -- Cool?
 dataset.plot(kind='box', subplots=True, layout=(2,2), sharex=False, sharey=False)
 pyplot.show()
+
+dataset.hist()
+pyplot.show()
