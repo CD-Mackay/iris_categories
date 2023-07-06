@@ -48,7 +48,8 @@ X_train, X_validation, Y_train, Y_validation = train_test_split(x, y, test_size=
 models = []
 models.append(('LR', LogisticRegression(solver='liblinear', multi_class='ovr')))
 models.append(('LDA', LinearDiscriminantAnalysis()))
-
+models.append(('KNN', KNeighborsClassifier()))
+models.append(('CART', DecisionTreeClassifier()))
 results = []
 names = []
 for name, model in models:
