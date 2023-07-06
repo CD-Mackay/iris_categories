@@ -47,6 +47,7 @@ X_train, X_validation, Y_train, Y_validation = train_test_split(x, y, test_size=
 ## Spot Check Algorithms
 models = []
 models.append(('LR', LogisticRegression(solver='liblinear', multi_class='ovr')))
+models.append(('LDA', LinearDiscriminantAnalysis()))
 
 results = []
 names = []
@@ -56,6 +57,6 @@ for name, model in models:
     results.append(cv_results)
     names.append(name)
     print('%s: %f (%f)' % (name, cv_results.mean(), cv_results.std()))
-    
+
 
     
