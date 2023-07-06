@@ -50,5 +50,12 @@ models.append(('LR', LogisticRegression(solver='liblinear', multi_class='ovr')))
 
 results = []
 names = []
-# for name, model in models:
+for name, model in models:
+    kfold=StratifiedKFold(n_splits=10, shuffle=True, random_state=1)
+    cv_results = cross_val_score(model, X_train, Y_train, cv=kfold, scoring='accuracy')
+    results.append(cv_results)
+    names.append(name)
+    print('%s: %f (%f)' % (name, cv_results.mean(), cv_results.std()))
+    
+
     
