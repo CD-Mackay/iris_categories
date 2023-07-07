@@ -69,8 +69,11 @@ pyplot.show()
 ## Make predictions
 model = SVC(gamma='auto')
 model.fit(X_train, Y_train)
-predictions = models.predict(X_validation)
+predictions = model.predict(X_validation)
 
-
+## Evaluate Predictions
+print(accuracy_score(Y_validation, predictions))
+print(confusion_matrix(Y_validation, predictions))
+print(classification_report(Y_validation, predictions))
 
     
