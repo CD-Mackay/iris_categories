@@ -66,5 +66,11 @@ pyplot.boxplot(results, labels=names)
 pyplot.title('Algorithm Comparisons')
 pyplot.show()
 
+## Make predictions
+model = SVC(gamma='auto')
+model.fit(X_train, Y_train)
+predictions = models.predict(X_validation)
+
+
 
     
