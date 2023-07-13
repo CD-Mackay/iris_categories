@@ -16,4 +16,29 @@ def build_model(my_learning_rate):
                 metrics=[tf.keras.metrics.RootMeanSquaredError()])
 
     return model    
+
+def train_model(model, feature, label, epochs, batch_size):
+     # Feed the feature values and the label values to the 
+    # model. The model will train for the specified number 
+    # of epochs, gradually learning how the feature values
+    # relate to the label values. 
+
+    history = model.fit(x=feature, y=label, batch_size=batch_size, epochs=epochs)
+
+    # Gather the trained model's weight and bias.
+    trained_weight = model.get_weights()[0]
+    trained_bias = model.get_weights()[1]
+
+    epochs = history.epoch
+
+    # Gather the history (a snapshot) of each epoch.
+    hist = pd.DataFrame(history.history)
+
+     # Specifically gather the model's root mean 
+     # squared error at each epoch. 
+    rmse = hist['root_mean_squared_error']
+
+    return trained_weight, trained_bias, epochs, rmse
+    
+
     
