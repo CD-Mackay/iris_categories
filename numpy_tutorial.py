@@ -24,7 +24,8 @@ print("feature", feature)
 label = (feature * 3) + 4
 print("label", label)
 
-noise = (np.random.random([15]) * 4) -2
+## Task 2, create noise
+noise = (np.random.random([15]) * 4) -2 ## Generate array of random ints between -2 and 2
 print("noise", noise)
-label = label + noise
+label = label + noise ## Add each value of noise array to label
 print("label", label)
