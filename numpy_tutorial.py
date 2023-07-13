@@ -22,4 +22,9 @@ print(random_floats_between_0_and_1)
 feature = np.arange(6, 21)
 print("feature", feature)
 label = (feature * 3) + 4
-print(label)
+print("label", label)
+
+noise = (np.random.random([15]) * 4) -2
+print("noise", noise)
+label = label + noise
+print("label", label)
