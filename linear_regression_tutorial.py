@@ -41,4 +41,20 @@ def train_model(model, feature, label, epochs, batch_size):
     return trained_weight, trained_bias, epochs, rmse
     
 
-    
+def plot_the_model(trained_weight, trained_bias, feature, label):
+    plt.xlabel('features')
+    plt.ylabel('label')
+
+    ## make scatterplot
+    plt.scatter(feature, label)
+
+    # Create a red line representing the model. The red line starts
+    # at coordinates (x0, y0) and ends at coordinates (x1, y1).
+    x0 = 0
+    y0 = trained_bias
+    x1 = feature[-1]
+    y1 = trained_bias + (trained_weight * x1)
+    plt.plot([x0, x1], [y0, y1], c='r')
+    plt.show()
+
+
