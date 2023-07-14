@@ -49,7 +49,8 @@ def plot_model(trained_weight, trained_bias, feature, label):
     x0 = 0
     y0 = trained_bias
     x1 = random_examples[feature].max()
-    y1 = trained_bias + (trained_weight * x1)
+    y1_nested = trained_bias + (trained_weight * x1) 
+    y1 = [item for sub_list in y1_nested for item in sub_list]
 
     plt.plot([x0, x1], [y0, y1], c='r')
   
