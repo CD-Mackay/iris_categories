@@ -22,6 +22,8 @@ def build_model(my_learning_rate):
                 loss="mean_squared_error",
                 metrics=[tf.keras.metrics.RootMeanSquaredError()])
     
+    return model
+    
 
 def train_model(model, df, feature, label, epochs, batch_size):
     history = model.fit(y=df[feature], x=df[label], batch_size=batch_size, epochs=epochs)
@@ -73,3 +75,9 @@ my_label = 'median_house_value'
 ## This model will predict house value based solely on total rooms
 
 my_model = None ## remove any previous versions of model
+
+my_model = build_model(learning_rate)
+weight, bias, epochs, rmse = train_model(my_model, training_df, my_feature, my_label, epochs, batch_size)
+
+plot_model(weight, bias, my_feature, my_label)
+plot_loss_curve(epochs, rmse)
