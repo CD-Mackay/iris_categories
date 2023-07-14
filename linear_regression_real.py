@@ -23,5 +23,31 @@ def build_model(my_learning_rate):
                 metrics=[tf.keras.metrics.RootMeanSquaredError()])
     
 
-def train_model(model, feature, label, epochs):
+def train_model(model, df, feature, label, epochs, batch_size):
+    history = model.fit(y=df[feature], x=df[label], batch_size=batch_size, epochs=epochs)
+
+    trained_weight = model.get_weights()[0]
+    trained_bias = model.get_weights()[1]
+    
+    epochs = history.epoch
+
+    hist = pd.DataFrame(history.history)
+
+    rmse = hist['root_mean_squared_error']
+
+    return trained_weight, trained_bias, epochs, rmse
+    
+def plot_model(trained_weight, trained_bias, feature, label):
+    plt.xlabel=('feature')
+    plt.ylabel=('label')
+
+    random_examples = training_df.sample(n=200)
+    plt.scatter(random_examples[feature], random_examples[label])
+
+    x0 = 0
+    y0 = trained_bias
+    x1 = random_examples[feature].max()
+    y1 = trained_bias + (trained_weight * x1)
+
+    plt.plot([x0, x1], [y0, y1], c='r')
     
