@@ -61,4 +61,15 @@ def plot_loss_curve(epochs, rmse):
     plt.legend()
     plt.ylim([rmse.min()*0.97, rmse.max()])
     plt.show()
-    
+
+
+learning_rate = 0.01
+epochs = 30
+batch_size = 30
+
+## Specify Feature and Label
+my_feature = "total_rooms" 
+my_label = 'median_house_value'
+## This model will predict house value based solely on total rooms
+
+my_model = None ## remove any previous versions of model
