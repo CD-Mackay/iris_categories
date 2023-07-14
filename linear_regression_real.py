@@ -50,4 +50,15 @@ def plot_model(trained_weight, trained_bias, feature, label):
     y1 = trained_bias + (trained_weight * x1)
 
     plt.plot([x0, x1], [y0, y1], c='r')
+  
+
+def plot_loss_curve(epochs, rmse):
+    plt.figure()
+    plt.xlabel = 'epoch'
+    plt.ylabel = 'root mean squared error'
+
+    plt.plot(epochs, rmse, label='Loss')
+    plt.legend()
+    plt.ylim([rmse.min()*0.97, rmse.max()])
+    plt.show()
     
