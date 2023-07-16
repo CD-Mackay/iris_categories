@@ -94,9 +94,11 @@ my_label = "median_house_value" # the median house value on a specific city bloc
 # That is, you're going to create a model that predicts house value based 
 # solely on the neighborhood's median income.  
 
+shuffled_train_df = train_df.reindex(np.random.permutation(train_df.index))
+
 # Invoke the functions to build and train the model.
 my_model = build_model(learning_rate)
-epochs, rmse, history = train_model(my_model, train_df, my_feature, 
+epochs, rmse, history = train_model(my_model, shuffled_train_df, my_feature, 
                                     my_label, epochs, batch_size, 
                                     validation_split)
 
