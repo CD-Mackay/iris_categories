@@ -6,8 +6,8 @@ from matplotlib import pyplot as plt
 pd.options.display.max_rows = 10
 pd.options.display.float_format = "{:.1f}".format
 
-train_df = pd.read_csv['california_housing_train.csv']
-test_df = pd.read_csv['california_housing_test.csv']
+train_df = pd.read_csv('california_housing_train.csv')
+test_df = pd.read_csv('california_housing_test.csv')
 
 
 scale_factor = 1000.0
@@ -64,11 +64,11 @@ def plot_the_loss_curve(epochs, mae_training, mae_validation):
   plt.xlabel("Epoch")
   plt.ylabel("Root Mean Squared Error")
 
-  plt.plot(epochs[1:], mae_training[:1], label="Training loss")
-  plt.plot(epochs[:1], mae_validation[:1], label="Validation Loss")
+  plt.plot(epochs[1:], mae_training[1:], label="Training loss")
+  plt.plot(epochs[1:], mae_validation[1:], label="Validation Loss")
   plt.legend()
 
-  merged_mae_lists = mae_training[:1] + mae_validation[:1]
+  merged_mae_lists = mae_training[1:] + mae_validation[1:]
   highest_loss = max(merged_mae_lists)
   lowest_loss = min(merged_mae_lists)
   delta = highest_loss - lowest_loss
@@ -79,5 +79,28 @@ def plot_the_loss_curve(epochs, mae_training, mae_validation):
   plt.show()
 
 
+# The following variables are the hyperparameters.
+learning_rate = 0.08
+epochs = 30
+batch_size = 100
+
+# Split the original training set into a reduced training set and a
+# validation set. 
+validation_split = 0.2
+
+# Identify the feature and the label.
+my_feature = "median_income"    # the median income on a specific city block.
+my_label = "median_house_value" # the median house value on a specific city block.
+# That is, you're going to create a model that predicts house value based 
+# solely on the neighborhood's median income.  
+
+# Invoke the functions to build and train the model.
+my_model = build_model(learning_rate)
+epochs, rmse, history = train_model(my_model, train_df, my_feature, 
+                                    my_label, epochs, batch_size, 
+                                    validation_split)
+
+plot_the_loss_curve(epochs, history["root_mean_squared_error"], 
+                    history["val_root_mean_squared_error"])
 
 
