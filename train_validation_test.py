@@ -58,3 +58,26 @@ def train_model(model, df, feature, label, my_epochs,
   rmse = hist["root_mean_squared_error"]
 
   return epochs, rmse, history.history   
+
+def plot_the_loss_curve(epochs, mae_training, mae_validation):
+  plt.figure()
+  plt.xlabel("Epoch")
+  plt.ylabel("Root Mean Squared Error")
+
+  plt.plot(epochs[1:], mae_training[:1], label="Training loss")
+  plt.plot(epochs[:1], mae_validation[:1], label="Validation Loss")
+  plt.legend()
+
+  merged_mae_lists = mae_training[:1] + mae_validation[:1]
+  highest_loss = max(merged_mae_lists)
+  lowest_loss = min(merged_mae_lists)
+  delta = highest_loss - lowest_loss
+  print("Delta:", delta)
+  top_of_y_axis = highest_loss + (delta * 0.05)
+  bottom_of_y_axis = lowest_loss - (delta * 0.05)
+  plt.ylim([bottom_of_y_axis, top_of_y_axis])
+  plt.show()
+
+
+
+
