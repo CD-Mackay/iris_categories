@@ -61,8 +61,8 @@ def plot_the_loss_curve(epochs, rmse):
 
 
 ## Hyperparameters
-learning_rate = 0.05
-epochs = 30
+learning_rate = 0.04
+epochs = 35
 batch_size = 100
 label_name = 'median_house_value'
 
@@ -80,9 +80,9 @@ preprocessing_layer = tf.keras.layers.Concatenate()(inputs.values())
 #    'dense_output': dense_output
 # }
 
-resolution_in_degrees = 1.0
+resolution_in_degrees = 0.2
 
-latitude_boundaries = list(np.arrange(int(min(train_df['latitude'])),
+latitude_boundaries = list(np.arange(int(min(train_df['latitude'])),
                                       int(max(train_df['latitude'])),
                                       resolution_in_degrees))
 print("latitude boundaries:", str(latitude_boundaries))
@@ -92,10 +92,6 @@ latitude = tf.keras.layers.Discretization(
     bin_boundaries=latitude_boundaries,
     name='discretization_latitude')(inputs.get('latitude'))
 
-latitude = tf.keras.layers.CategoryEncoding(
-    num_tokens=len(latitude_boundaries) + 1,
-    output_mode='one_hot',
-    name='category_encoding_latitude')(latitude)
 
 # Create a list of numbers representing the bucket boundaries for longitude.
 longitude_boundaries = list(np.arange(int(min(train_df['longitude'])), 
@@ -109,16 +105,15 @@ longitude = tf.keras.layers.Discretization(
    name='discretization_longitude'
 )(inputs.get('longitude'))
 
-longitude = tf.keras.layers.CategoryEncoding(
-   num_tokens=len(longitude_boundaries) + 1,
-   output_mode='one_hot',
-   name='category_encoding_longitude'
-)(longitude)
+feature_cross = tf.keras.layers.HashedCrossing(
+   num_bins = len(latitude_boundaries) * len(longitude_boundaries),
+   output_mode = 'one_hot',
+   name='cross_latitude_longitude'
+)([latitude, longitude])
 
-concatenate_layer = tf.keras.layers.concatenate()([latitude, longitude])
 dense_output = layers.Dense(
    units=1, input_shape=(2,), name='dense_layer'
-)(concatenate_layer)
+)(feature_cross)
 
 outputs = {
    'dense_output': dense_output
