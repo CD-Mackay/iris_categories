@@ -49,7 +49,7 @@ def train_model(model, dataset, epochs, batch_size, label_name):
     return epochs, rmse
     
 
-def plot_the_loss_curve():
+def plot_the_loss_curve(epochs, rmse):
   plt.figure()
   plt.xlabel("Epoch")
   plt.ylabel("Root Mean Squared Error")
@@ -58,3 +58,24 @@ def plot_the_loss_curve():
   plt.legend()
   plt.ylim([rmse.min()*0.94, rmse.max()* 1.05])
   plt.show()  
+
+
+## Hyperparameters
+learning_rate = 0.05
+epochs = 30
+batch_size = 100
+label_name = 'median_house_value'
+
+preprocessing_layer = tf.keras.layers.Concatenate()(inputs.values())
+
+# The two Input layers are concatenated so they can be passed as a single
+# tensor to a Dense layer.
+dense_output = layers.Dense(
+   units = 1,
+   input_shape = (1,),
+   name='dense_layer'
+)(preprocessing_layer)
+
+outputs = {
+   'dense_output': dense_output
+}
