@@ -28,7 +28,7 @@ inputs = {
 }
 
 def create_model(my_inputs, my_outputs, my_learning_rate):
-    model = tf.keras.model(inputs=my_inputs, outputs=my_outputs)
+    model = tf.keras.Model(inputs=my_inputs, outputs=my_outputs)
 
     model.compile(optimizer=tf.keras.optimizers.experimental.RMSprop(
       learning_rate=my_learning_rate),
@@ -44,7 +44,7 @@ def train_model(model, dataset, epochs, batch_size, label_name):
 
     epochs = history.epoch
     hist = pd.DataFrame(history.history)
-    rmse = history['root_mean_squared_error']
+    rmse = hist['root_mean_squared_error']
 
     return epochs, rmse
     
@@ -68,14 +68,75 @@ label_name = 'median_house_value'
 
 preprocessing_layer = tf.keras.layers.Concatenate()(inputs.values())
 
-# The two Input layers are concatenated so they can be passed as a single
-# tensor to a Dense layer.
+# # The two Input layers are concatenated so they can be passed as a single
+# # tensor to a Dense layer.
+# dense_output = layers.Dense(
+#    units = 1,
+#    input_shape = (1,),
+#    name='dense_layer'
+# )(preprocessing_layer)
+
+# outputs = {
+#    'dense_output': dense_output
+# }
+
+resolution_in_degrees = 1.0
+
+latitude_boundaries = list(np.arrange(int(min(train_df['latitude'])),
+                                      int(max(train_df['latitude'])),
+                                      resolution_in_degrees))
+print("latitude boundaries:", str(latitude_boundaries))
+
+# Create a Discretization layer to separate the latitude data into buckets.
+latitude = tf.keras.layers.Discretization(
+    bin_boundaries=latitude_boundaries,
+    name='discretization_latitude')(inputs.get('latitude'))
+
+latitude = tf.keras.layers.CategoryEncoding(
+    num_tokens=len(latitude_boundaries) + 1,
+    output_mode='one_hot',
+    name='category_encoding_latitude')(latitude)
+
+# Create a list of numbers representing the bucket boundaries for longitude.
+longitude_boundaries = list(np.arange(int(min(train_df['longitude'])), 
+                                      int(max(train_df['longitude'])), 
+                                      resolution_in_degrees))
+
+print("longitude boundaries: " + str(longitude_boundaries))
+
+longitude = tf.keras.layers.Discretization(
+   bin_boundaries = longitude_boundaries,
+   name='discretization_longitude'
+)(inputs.get('longitude'))
+
+longitude = tf.keras.layers.CategoryEncoding(
+   num_tokens=len(longitude_boundaries) + 1,
+   output_mode='one_hot',
+   name='category_encoding_longitude'
+)(longitude)
+
+concatenate_layer = tf.keras.layers.concatenate()([latitude, longitude])
 dense_output = layers.Dense(
-   units = 1,
-   input_shape = (1,),
-   name='dense_layer'
-)(preprocessing_layer)
+   units=1, input_shape=(2,), name='dense_layer'
+)(concatenate_layer)
 
 outputs = {
    'dense_output': dense_output
 }
+
+
+my_model = create_model(inputs, outputs, learning_rate)
+
+
+# Train the model on the training set.
+epochs, rmse = train_model(my_model, train_df, epochs, batch_size, label_name)
+
+# Print out the model summary.
+my_model.summary(expand_nested=True)
+
+plot_the_loss_curve(epochs, rmse)
+
+print("\n: Evaluate the new model against the test set:")
+test_features = {name:np.array(value) for name, value in test_df.items()}
+test_label = np.array(test_features.pop(label_name))
+my_model.evaluate(x=test_features, y=test_label, batch_size=batch_size)
