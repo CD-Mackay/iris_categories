@@ -81,12 +81,12 @@ def plot_the_loss_curve(epochs, mae_training, mae_validation):
 
 # The following variables are the hyperparameters.
 learning_rate = 0.08
-epochs = 30
+epochs = 70
 batch_size = 100
 
 # Split the original training set into a reduced training set and a
 # validation set. 
-validation_split = 0.2
+validation_split = 0.3
 
 # Identify the feature and the label.
 my_feature = "median_income"    # the median income on a specific city block.
@@ -104,5 +104,12 @@ epochs, rmse, history = train_model(my_model, shuffled_train_df, my_feature,
 
 plot_the_loss_curve(epochs, history["root_mean_squared_error"], 
                     history["val_root_mean_squared_error"])
+
+x_test = test_df[my_feature]
+y_test = test_df[my_label]
+
+results = my_model.evaluate(x_test, y_test, batch_size=batch_size)
+
+print("results:", results)
 
 
