@@ -105,7 +105,7 @@ longitude = tf.keras.layers.Discretization(
    name='discretization_longitude'
 )(inputs.get('longitude'))
 
-feature_cross = tf.keras.layers.HashedCrossing(
+feature_cross = tf.keras.layers.HashedCrossing( ## Create cross_feature by combining lat and long values
    num_bins = len(latitude_boundaries) * len(longitude_boundaries),
    output_mode = 'one_hot',
    name='cross_latitude_longitude'
