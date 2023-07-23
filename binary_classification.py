@@ -89,3 +89,19 @@ def plot_curve(epochs, hist, list_of_metrics):
     plt.plot(epochs[1:], x[1:], label=m)
 
   plt.legend()
+
+
+
+## The following values are hyperparameters
+
+learning_rate = 0.001
+epochs = 20
+batch_size = 100
+label_name = 'median_house_value_is_high'
+classification_threshold = 0.35
+
+## Define metrics model will measure
+METRICS = [
+           tf.keras.metrics.BinaryAccuracy(name='accuracy', 
+                                           threshold=classification_threshold),
+          ]
