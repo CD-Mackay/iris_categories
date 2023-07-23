@@ -105,3 +105,14 @@ METRICS = [
            tf.keras.metrics.BinaryAccuracy(name='accuracy', 
                                            threshold=classification_threshold),
           ]
+
+my_model = create_model(inputs, learning_rate, METRICS)
+
+# Train the model on the training set.
+epochs, hist = train_model(my_model, train_df_norm, epochs, 
+                           label_name, batch_size)
+
+# Plot a graph of the metric(s) vs. epochs.
+list_of_metrics_to_plot = ['accuracy'] 
+
+plot_curve(epochs, hist, list_of_metrics_to_plot)
