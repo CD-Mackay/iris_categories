@@ -42,3 +42,21 @@ inputs = {
     'total_rooms': tf.keras.Input(shape=(1,))
 }
 
+def create_model(my_inputs, my_learning_rate, METRICS):
+    concatenated_inputs = tf.keras.layers.Concatenate()(my_inputs.values())
+    dense = layers.Dense(units = 1, input_shape=(1,), name='dense_layer', activation=tf.sigmoid)
+    dense_output = dense(concatenated_inputs)
+ ##  """Create and compile a simple classification model."""
+    my_outputs = {
+    'dense': dense_output,
+    }
+    model = tf.keras.Model(inputs=my_inputs, outputs=my_outputs)
+
+  # Call the compile method to construct the layers into a model that
+  # TensorFlow can execute.  Notice that we're using a different loss
+  # function for classification than for regression.    
+    model.compile(optimizer=tf.keras.optimizers.experimental.RMSprop(learning_rate=my_learning_rate),                                                   
+                loss=tf.keras.losses.BinaryCrossentropy(),
+                metrics=METRICS)
+    return model    
+
