@@ -58,5 +58,19 @@ def create_model(my_inputs, my_learning_rate, METRICS):
     model.compile(optimizer=tf.keras.optimizers.experimental.RMSprop(learning_rate=my_learning_rate),                                                   
                 loss=tf.keras.losses.BinaryCrossentropy(),
                 metrics=METRICS)
-    return model    
+    return model 
 
+def train_model(model, dataset, epochs, label_name, batch_size=None, shuffle=True):
+    features = {name:np.array(value) for name, value in dataset.items()}
+    label = np.array(features.pop(label_name))
+
+    history = model.fit(x=features, y=label, batch_size=batch_size,
+                      epochs=epochs, shuffle=shuffle)   
+
+    # The list of epochs is stored separately from the rest of history.
+    epochs = history.epoch
+
+  # Isolate the classification metric for each epoch.
+    hist = pd.DataFrame(history.history)
+
+    return epochs, hist  
