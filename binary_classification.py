@@ -28,5 +28,10 @@ test_df_norm = (test_df - test_df_mean)/test_df_std
 # Examine some of the values of the normalized training set. Notice that most 
 # Z-scores fall between -2 and +2.
 train_df_norm.head()
-print(train_df_norm.head())
 
+threshold = 265000
+train_df_norm['median_house_value_is_high'] = (train_df['median_house_value'] > threshold).astype(float)
+test_df_norm['median_house_value_is_high'] = (test_df['median_house_value'] > threshold).astype(float)
+
+train_df_norm["median_house_value_is_high"].head(8000)
+print(train_df_norm["median_house_value_is_high"].head(8000))
