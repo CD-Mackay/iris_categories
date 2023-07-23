@@ -35,3 +35,10 @@ test_df_norm['median_house_value_is_high'] = (test_df['median_house_value'] > th
 
 train_df_norm["median_house_value_is_high"].head(8000)
 print(train_df_norm["median_house_value_is_high"].head(8000))
+
+## Define features to be used to train model
+inputs = {
+    'median_income': tf.keras.Input(shape=(1,)),
+    'total_rooms': tf.keras.Input(shape=(1,))
+}
+
