@@ -97,14 +97,15 @@ learning_rate = 0.001
 epochs = 20
 batch_size = 100
 label_name = 'median_house_value_is_high'
-classification_threshold = 0.35
+classification_threshold = 0.50
 
 ## Define metrics model will measure
 METRICS = [
            tf.keras.metrics.BinaryAccuracy(name='accuracy', 
                                            threshold=classification_threshold),
            tf.keras.metrics.Precision(name='precision', thresholds=classification_threshold),
-           tf.keras.metrics.Recall(name='recall', thresholds=classification_threshold)
+           tf.keras.metrics.Recall(name='recall', thresholds=classification_threshold),
+           tf.keras.metrics.AUC(name='auc', num_thresholds=100)
           ]
 
 my_model = create_model(inputs, learning_rate, METRICS)
@@ -114,7 +115,7 @@ epochs, hist = train_model(my_model, train_df_norm, epochs,
                            label_name, batch_size)
 
 # Plot a graph of the metric(s) vs. epochs.
-list_of_metrics_to_plot = ['accuracy', 'precision', 'recall'] 
+list_of_metrics_to_plot = ['accuracy', 'precision', 'recall', 'auc'] 
 
 plot_curve(epochs, hist, list_of_metrics_to_plot)
 
