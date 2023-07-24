@@ -1,2 +1,3 @@
 ## Train_test_validation split
   - Returning again to the california housing data, this tutorial uses a train_test_validation split in the dataset to more accurately develop a machine learning model.
+  [view tutorial](https://colab.research.google.com/github/google/eng-edu/blob/main/ml/cc/exercises/validation_and_test_sets.ipynb?utm_source=mlcc&utm_campaign=colab-external&utm_medium=referral&utm_content=validation_tf2-colab&hl=en)
