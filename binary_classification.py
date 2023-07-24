@@ -34,7 +34,6 @@ train_df_norm['median_house_value_is_high'] = (train_df['median_house_value'] > 
 test_df_norm['median_house_value_is_high'] = (test_df['median_house_value'] > threshold).astype(float)
 
 train_df_norm["median_house_value_is_high"].head(8000)
-print(train_df_norm["median_house_value_is_high"].head(8000))
 
 ## Define features to be used to train model
 inputs = {
@@ -104,6 +103,8 @@ classification_threshold = 0.35
 METRICS = [
            tf.keras.metrics.BinaryAccuracy(name='accuracy', 
                                            threshold=classification_threshold),
+           tf.keras.metrics.Precision(name='precision', thresholds=classification_threshold),
+           tf.keras.metrics.Recall(name='recall', thresholds=classification_threshold)
           ]
 
 my_model = create_model(inputs, learning_rate, METRICS)
@@ -113,6 +114,11 @@ epochs, hist = train_model(my_model, train_df_norm, epochs,
                            label_name, batch_size)
 
 # Plot a graph of the metric(s) vs. epochs.
-list_of_metrics_to_plot = ['accuracy'] 
+list_of_metrics_to_plot = ['accuracy', 'precision', 'recall'] 
 
 plot_curve(epochs, hist, list_of_metrics_to_plot)
+
+features = {name:np.array(value) for name, value in test_df_norm.items()}
+label = np.array(features.pop(label_name))
+
+print("Evaluation:",my_model.evaluate(x = features, y = label, batch_size=batch_size))
