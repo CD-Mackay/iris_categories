@@ -64,16 +64,15 @@ def plot_loss_curve(epochs, rmse):
     plt.ylim([rmse.min()*0.97, rmse.max()])
     plt.show()
 
-
+## Hyperparameters
 learning_rate = 0.03
 epochs = 100
 batch_size = 120
 
 ## Specify Feature and Label
 training_df['rooms_per_person'] = training_df['total_rooms'] / training_df['population']
-my_feature = "median_income" 
+my_feature = "rooms_per_person" 
 my_label = 'median_house_value'
-## This model will predict house value based solely on total rooms
 
 my_model = None ## remove any previous versions of model
 
