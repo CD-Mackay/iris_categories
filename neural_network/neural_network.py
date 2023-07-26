@@ -34,3 +34,19 @@ population = tf.keras.layers.Normalization(
     axis=None)
 population.adapt(train_df['population'])
 population = population(inputs.get('population'))
+
+## Create list of boundaries for bucketing latitude
+latitude_boundaries = np.linspace(-3, 3, 20+1)
+
+## Create normalization layer for latitude
+latitude = tf.keras.layers.Normalization(
+    name='normalization_latitude',
+    axis=None)
+latitude.adapt(train_df['latitude'])
+latitude = latitude(inputs.get('latitude'))
+
+## Create discretization layer to separate latitude data into buckets
+latitude = tf.keras.layers.Discretization(
+    bin_boundaries=latitude_boundaries,
+    name='discretization_latitude'
+)(latitude)
