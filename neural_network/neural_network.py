@@ -27,3 +27,10 @@ median_income = tf.keras.layers.Normalization(
 )
 
 median_income.adapt(train_df['median_income'])
+
+## Same for population data
+population = tf.keras.layers.Normalization(
+    name='normalization_population',
+    axis=None)
+population.adapt(train_df['population'])
+population = population(inputs.get('population'))
