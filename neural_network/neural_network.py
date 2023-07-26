@@ -65,3 +65,13 @@ longitude = longitude(inputs.get('longitude'))
 longitude = tf.keras.layers.Discretization(
     bin_boundaries=longitude_boundaries,
     name='discretization_longitude')(longitude)
+
+## Cross latitude and longitude boundaries into feature cross
+feature_cross = tf.keras.layers.HashedCrssing(
+    num_bins=len(latitude_boundaries) * len(longitude_boundaries),
+    output_mode='one_hot',
+    name='cross_latitude_longitude')([latitude, longitude])
+
+preprocessing_layers = tf.keras.layers.Concatenate()(
+    [feature_cross, median_income, population]
+)
