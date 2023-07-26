@@ -50,3 +50,18 @@ latitude = tf.keras.layers.Discretization(
     bin_boundaries=latitude_boundaries,
     name='discretization_latitude'
 )(latitude)
+
+# Create a list of numbers representing the bucket boundaries for longitude.
+longitude_boundaries = np.linspace(-3, 3, 20+1)
+
+# Create a Normalization layer to normalize the longitude data.
+longitude = tf.keras.layers.Normalization(
+    name='normalization_longitude',
+    axis=None)
+longitude.adapt(train_df['longitude'])
+longitude = longitude(inputs.get('longitude'))
+
+# Create a Discretization layer to separate the longitude data into buckets.
+longitude = tf.keras.layers.Discretization(
+    bin_boundaries=longitude_boundaries,
+    name='discretization_longitude')(longitude)
