@@ -131,3 +131,12 @@ def train_model(model, dataset,epochs, batch_size, label_name, validation_split=
 
     return epochs, mse, history.history
 
+def get_outputs_linear_regression():
+    dense_output = tf.keras.layers.Dense(units=1, input_shape=(1,), name='dense_output')(preprocessing_layers)
+
+    outputs = {
+        'dense_output': dense_output
+    }
+
+    return outputs
+
