@@ -140,3 +140,25 @@ def get_outputs_linear_regression():
 
     return outputs
 
+## Hyperparameters
+learning_rate = 0.01
+epochs = 15
+batch_size = 10000
+label_name = 'median_house_value'
+
+## split og training set into reduced set + validation set
+validation_split = 0.2
+
+outputs = get_outputs_linear_regression()
+
+## Establish model topography
+my_model = create_model(inputs, outputs, learning_rate)
+
+## Train model on normalized training set
+epochs, mse, history = train_model(my_model, train_df, epochs, batch_size, label_name, validation_split)
+plot_the_loss_curve(epochs, mse, history['val_mean_squared_error'])
+
+test_features = {name:np.array(value) for name, value in test_df.items()}
+test_label = test_median_house_value_normalized(test_features.pop(label_name))
+print("\n Evaluate the linear regression model against the test set:")
+my_model.evaluate(x = test_features, y = test_label, batch_size=batch_size, return_dict=True)
