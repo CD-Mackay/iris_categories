@@ -94,3 +94,17 @@ def plot_the_loss_curve(epochs, mse_training, mse_validation):
     plt.legend()
     plt.show()
 
+def create_model(my_inputs, my_outputs, my_learning_rate):
+    model = tf.keras.Model(inputs=my_inputs, outputs=my_outputs)
+
+    model.compile(optimizer=tf.keras.optimizers.Adam(
+        learning_rate=my_learning_rate
+    ),
+    loss="mean_squared_error",
+    metrics=[tf.keras.metrics.MeanSquaredError()]
+    )
+
+    return model
+
+
+
