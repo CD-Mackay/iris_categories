@@ -118,4 +118,16 @@ test_median_house_value_normalized.adapt(
     np.array(test_df['median_house_value'])
 )
 
+def train_model(model, dataset,epochs, batch_size, label_name, validation_split=0.1):
+    features = {name:np.array(value) for name, value in dataset.items()}
+    label = train_median_house_value_normalized(
+        np.array(features.pop(label_name))
+    )
+    history = model.fit(x=features, y=label, batch_size=batch_size, epochs=epochs, shuffle=True, validation_split=validation_split)
+
+    epochs = history.epoch
+    hist = pd.DataFrame(history.history)
+    mse = hist['mean_squared_error']
+
+    return epochs, mse, history.history
 
