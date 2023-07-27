@@ -107,4 +107,15 @@ def create_model(my_inputs, my_outputs, my_learning_rate):
     return model
 
 
+## Create normalization layers for median_house_value
+train_median_house_value_normalized = tf.keras.layers.Normalization(axis=None)
+train_median_house_value_normalized.adapt(
+    np.array(train_df['median_house_value'])
+)
+
+test_median_house_value_normalized = tf.keras.layers.Normalization(axis=None)
+test_median_house_value_normalized.adapt(
+    np.array(test_df['median_house_value'])
+)
+
 
