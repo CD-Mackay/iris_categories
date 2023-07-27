@@ -16,6 +16,8 @@ inputs = {
     tf.keras.layers.Input(shape=(1,), dtype=tf.float32, name='latitude'),
     'longitude':
     tf.keras.layers.Input(shape=(1,), dtype=tf.float32, name='longitude'),
+    'median_income':
+    tf.keras.layers.Input(shape=(1,), dtype=tf.float32, name='median_income'),
     'population': 
     tf.keras.layers.Input(shape=(1,), dtype=tf.float32, name='population')
 }
@@ -27,6 +29,7 @@ median_income = tf.keras.layers.Normalization(
 )
 
 median_income.adapt(train_df['median_income'])
+median_income = median_income(inputs.get('median_income'))
 
 ## Same for population data
 population = tf.keras.layers.Normalization(
@@ -67,14 +70,17 @@ longitude = tf.keras.layers.Discretization(
     name='discretization_longitude')(longitude)
 
 ## Cross latitude and longitude boundaries into feature cross
+# Cross the latitude and longitude features into a single one-hot vector.
 feature_cross = tf.keras.layers.HashedCrossing(
-    num_bins=len(latitude_boundaries) * len(longitude_boundaries),
+    # num_bins can be adjusted: Higher values improve accuracy, lower values
+    # improve performance.
+    num_bins=len(latitude_boundaries) * len(longitude_boundaries), 
     output_mode='one_hot',
     name='cross_latitude_longitude')([latitude, longitude])
 
+# Concatenate our inputs into a single tensor.
 preprocessing_layers = tf.keras.layers.Concatenate()(
-    [feature_cross, median_income, population]
-)
+    [feature_cross, median_income, population])
 
 def plot_the_loss_curve(epochs, mse_training, mse_validation):
     plt.figure()
