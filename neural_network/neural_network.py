@@ -173,10 +173,10 @@ label_name = 'median_house_value'
 ## split og training set into reduced set + validation set
 validation_split = 0.2
 
-outputs = get_outputs_linear_regression()
+dnn_outputs = get_outputs_dnn()
 
 ## Establish model topography
-my_model = create_model(inputs, outputs, learning_rate)
+my_model = create_model(inputs, dnn_outputs, learning_rate)
 
 ## Train model on normalized training set
 epochs, mse, history = train_model(my_model, train_df, epochs, batch_size, label_name, validation_split)
