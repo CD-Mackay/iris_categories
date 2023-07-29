@@ -147,11 +147,11 @@ def get_outputs_linear_regression():
     return outputs
 
 def get_outputs_dnn():
-    dense_output = tf.keras.layers.Dense(units=20, input_shape=(1,),
+    dense_output = tf.keras.layers.Dense(units=16, input_shape=(1,),
                                      activation='relu',
                                      name='hidden_dense_layer_1')(preprocessing_layers)
 
-    dense_output = tf.keras.layers.Dense(units=12, input_shape=(1,),
+    dense_output = tf.keras.layers.Dense(units=8, input_shape=(1,),
                                      activation='relu',
                                      name='hidden_dense_layer_2')(dense_output)
     dense_output = tf.keras.layers.Dense(units=1, input_shape=(1,),
