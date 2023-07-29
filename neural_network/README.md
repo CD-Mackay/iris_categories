@@ -5,5 +5,5 @@
   
 
 ### Todos
-  - Figure out how to alter number of nodes per layer programatically
+  - Figure out how to alter number of nodes per layer programatically(07-29-23 Completed)
   
